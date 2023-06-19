@@ -2,11 +2,10 @@ import { defineComponent, ref, reactive, watchEffect} from 'vue'
 import { type Ref } from 'vue'
 import MonatoEditor from './components/MonatoEditor'
 import { createUseStyles } from 'vue-jss'
-
+import SchemaForm, { type Schema } from '../lib'
 import demos from './demos'
 
 // TODO: 在lib中export
-type Schema = any
 type UISchema = any
 
 function toJson(data: any) {
@@ -71,7 +70,6 @@ const useStyles = createUseStyles({
   },
 })
 
-
 export default defineComponent({
   name: 'App',
   setup() {
@@ -105,8 +103,12 @@ export default defineComponent({
       demo.schemaCode = toJson(d.schema)
       demo.dataCode = toJson(d.default)
       demo.uiSchemaCode = toJson(d.uiSchema)
-
     })
+
+    function handleChange(v: any) {
+      demo.data = v
+      demo.dataCode = toJson(v)
+    }
 
     function handleCodeChange(
       file: 'uiSchema' | 'data' | 'schema',
@@ -173,7 +175,11 @@ export default defineComponent({
               </div>
             </div>
             <div class={classes.form}>
-              表单
+              <SchemaForm 
+                schema={demo.schema!}
+                onChange={handleChange} 
+                value={demo.data}
+              />
             </div>
           </div>
         </div>
