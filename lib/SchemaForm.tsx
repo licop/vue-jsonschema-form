@@ -12,7 +12,7 @@ export default defineComponent({
       required: true
     },
     onChange: {
-      type: Function as PropType<(v: any) => void>，
+      type: Function as PropType<(v: any) => void>,
       required: true
     }
   },

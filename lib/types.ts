@@ -1,3 +1,5 @@
+import type { PropType } from 'vue'
+
 export enum SchemaTypes {
   'NUMBER' = 'number',
   'INTEGER' = 'integer',
@@ -46,3 +48,29 @@ export interface Schema {
   exclusiveMinimum?: number
 }
 
+export const FilePropsDefine = {
+  schema: {
+    type: Object as PropType<Schema>,
+    require: true
+  },
+  uiSchema: {
+    type: Object as PropType<UISchema>,
+    require: true
+  },
+  value: {
+    require: true
+  },
+  onChange: {
+    type: Function as PropType<(v: any) => void>,
+    required: true
+  },
+  rootSchema: {
+    type: Object as PropType<Schema>,
+    require: true
+  },
+  errorSchema: {
+    type: Object as PropType<Schema>,
+    require: true
+  }
+
+}
