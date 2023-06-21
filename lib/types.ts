@@ -48,29 +48,24 @@ export interface Schema {
   exclusiveMinimum?: number
 }
 
-export const FilePropsDefine = {
+
+export const FiledPropsDefine = {
   schema: {
     type: Object as PropType<Schema>,
-    require: true
-  },
-  uiSchema: {
-    type: Object as PropType<UISchema>,
-    require: true
+    required: true,
   },
   value: {
-    require: true
+    required: true,
   },
   onChange: {
     type: Function as PropType<(v: any) => void>,
-    required: true
-  },
-  rootSchema: {
-    type: Object as PropType<Schema>,
-    require: true
-  },
-  errorSchema: {
-    type: Object as PropType<Schema>,
-    require: true
+    required: true,
   }
+} as const
 
+export interface FileProps {
+  schema: Schema,
+  uiSchema: any,
+  value: any,
+  onChange: (v: any) => void
 }

@@ -1,3 +1,4 @@
-import simple from './simple';
+import Simple from './simple';
+import Demo from './demo'
 
-export default [simple]
+export default [Demo, Simple]

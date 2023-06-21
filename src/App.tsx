@@ -96,7 +96,7 @@ export default defineComponent({
     watchEffect(() => {
       const index = selectRef.value
       const d = demos[index]
-
+      
       demo.schema = d.schema
       demo.data = d.default
       demo.uiSchema = d.uiSchema
