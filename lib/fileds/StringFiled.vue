@@ -3,9 +3,9 @@
 </template>
 
 <script lang="ts" setup>
-import type { FileProps } from '../types'
+import type { FiledProps } from '../types'
 
-const props = defineProps<FileProps>()
+const props = defineProps<FiledProps>()
 
 const handleChange = (e: any) => {
   props.onChange(e.target.value)

@@ -81,3 +81,7 @@ export interface UISchema extends VueJsonSchemaConfig {
   };
 }
 ```
+
+## 更多参考
+
+- [JSON Schema 入门和应用 掘金](https://juejin.cn/post/7071174879778242568)

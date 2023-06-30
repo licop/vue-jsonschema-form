@@ -15,8 +15,11 @@
     "ajv": "^6.12.4",
     "ajv-errors": "^1.0.1",
     "ajv-i18n": "^3.5.0",
+    "json-schema-merge-allof": "^0.8.1",
+    "jsonpointer": "^5.0.1",
     "jss": "^10.10.0",
     "jss-preset-default": "^10.10.0",
+    "lodash.union": "^4.6.0",
     "monaco-editor": "^0.39.0",
     "vue": "^3.3.4",
     "vue-jss": "^0.0.4"
@@ -24,6 +27,8 @@
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.2.0",
     "@tsconfig/node18": "^2.0.1",
+    "@types/json-schema-merge-allof": "^0.6.1",
+    "@types/lodash.union": "^4.6.7",
     "@types/node": "^18.16.17",
     "@vitejs/plugin-vue": "^4.2.3",
     "@vitejs/plugin-vue-jsx": "^3.0.1",

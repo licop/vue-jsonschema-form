@@ -1,9 +1,10 @@
-import  { defineComponent } from 'vue';
-
-import type { PropType } from 'vue';
+import  { computed, defineComponent } from 'vue';
 import { SchemaTypes, type Schema, FiledPropsDefine } from './types';
 import StringFiled from './fileds/StringFiled.vue';
-import NumberFiled from './fileds/NumberFiled';
+import NumberFiled from './fileds/NumberFiled.vue';
+import ObjectFiled from './fileds/ObjectFiled';
+
+import { retrieveSchema } from './utils';
 
 
 export default defineComponent({
@@ -11,10 +12,17 @@ export default defineComponent({
   props: FiledPropsDefine,
   setup(props) {
     
+    const retrievedSchemaRef = computed(() => {
+      const { schema, rootSchema, value } = props
+
+      return retrieveSchema(schema, rootSchema, value)
+    })
+
+
     return () => {
       const { schema } = props
       const type = schema.type
-      
+      const retrievedSchema = retrievedSchemaRef.value
       let Component: any 
 
       switch(type) {
@@ -26,12 +34,16 @@ export default defineComponent({
           Component = NumberFiled
           break
         }
+        case SchemaTypes.OBJECT: {
+          Component = ObjectFiled
+          break
+        }
         default: {
           console.warn(`${type} is not supported`)
         }
       }
 
-      return <Component {...props} />
+      return <Component {...props} schema={retrievedSchema} />
     }
   }
 

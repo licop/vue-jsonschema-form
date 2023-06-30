@@ -1,8 +1,8 @@
 export default {
   name: 'Demo',
   schema: {
-    type: 'string'
+    type: 'object'
   },
   uiSchema: {},
-  default: 'licop'
+  default: 1
 }
