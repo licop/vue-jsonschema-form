@@ -1,4 +1,5 @@
 import Simple from './simple';
 import Demo from './demo'
+import Test from './test'
 
-export default [Demo, Simple]
+export default [Demo, Simple, Test]

@@ -27,7 +27,7 @@ export default defineComponent({
     const context = {
       SchemaItem
     }
-
+    // 使用provide将SchemaItem传到子组件，防止组件间的的循环嵌套
     provide(SchemaFormContextKey, context)
 
     return () => {

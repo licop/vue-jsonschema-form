@@ -1,4 +1,4 @@
-import type { PropType } from 'vue'
+import type { PropType, DefineComponent, ExtractPropTypes } from 'vue'
 
 export enum SchemaTypes {
   'NUMBER' = 'number',
@@ -84,3 +84,6 @@ export interface FiledProps {
   value: any,
   onChange: (v: any) => void
 }
+
+
+export type CommonFiledType = DefineComponent<ExtractPropTypes<typeof FiledPropsDefine>>

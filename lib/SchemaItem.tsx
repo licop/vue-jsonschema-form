@@ -3,6 +3,7 @@ import { SchemaTypes, type Schema, FiledPropsDefine } from './types';
 import StringFiled from './fileds/StringFiled.vue';
 import NumberFiled from './fileds/NumberFiled.vue';
 import ObjectFiled from './fileds/ObjectFiled';
+import ArrayField from './fileds/ArrayFiled';
 
 import { retrieveSchema } from './utils';
 
@@ -36,6 +37,10 @@ export default defineComponent({
         }
         case SchemaTypes.OBJECT: {
           Component = ObjectFiled
+          break
+        }
+        case SchemaTypes.ARRAY: {
+          Component = ArrayField
           break
         }
         default: {
