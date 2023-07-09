@@ -30,6 +30,29 @@ export default {
             type: 'number',
           },
         ],
+      },
+      singleTypeArray: {
+        title: 'singleTypeArray',
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            name: {
+              type: 'string',
+            },
+            age: {
+              type: 'number',
+            },
+          }
+        }
+      },
+      multiSelectArray: {
+        title: 'multiSelectArray',
+        type: 'array',
+        items: {
+          type: 'string',
+          enum: ['123', '456', '789'],
+        },
       }
     }
   },
@@ -51,6 +74,7 @@ export default {
     firstName: 'Chuck',
     lastName: 'Norris',
     telephone: '13455555555',
-    staticArray: ['licop', 23]
+    staticArray: ['licop', 23],
+    singleTypeArray: [{ name: 'jokcy', age: 12 }]
   },
 }
