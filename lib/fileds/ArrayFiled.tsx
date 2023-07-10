@@ -2,8 +2,7 @@ import { defineComponent, type PropType } from 'vue';
 import { createUseStyles } from 'vue-jss';
 import { FiledPropsDefine, type Schema } from '../types'
 import { useVJSFContext } from '../context';
-import SelectionWidget from '../widgets/selection';
-
+import SelectionWidget from '../widgets/Selection';
 
 const useStyles = createUseStyles({
   container: {
