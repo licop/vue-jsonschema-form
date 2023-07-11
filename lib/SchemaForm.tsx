@@ -16,10 +16,6 @@ export default defineComponent({
     onChange: {
       type: Function as PropType<(v: any) => void>,
       required: true
-    },
-    theme: {
-      type: Object as PropType<Theme>,
-      required: true
     }
   },
   setup(props, {slots, emit, attrs}) {
@@ -29,8 +25,7 @@ export default defineComponent({
     }
 
     const context = {
-      SchemaItem,
-      theme: props.theme
+      SchemaItem
     }
     // 使用provide将SchemaItem传到子组件，防止组件间的的循环嵌套
     provide(SchemaFormContextKey, context)

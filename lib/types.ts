@@ -88,11 +88,11 @@ export interface FiledProps {
 
 export type CommonFiledType = DefineComponent<ExtractPropTypes<typeof FiledPropsDefine>>
 
-const CommonWidgetPropsDefine = {
+export const CommonWidgetPropsDefine = {
   value: {},
   onChange: {
     type: Function as PropType<(v: any) => void>,
-    require: true
+    required: true,
   }
 } as const
 
@@ -109,7 +109,7 @@ export const SelectionWidgetPropsDefine = {
   },
 } as const
 
-type CommonWidgetDefine = DefineComponent<typeof CommonWidgetPropsDefine>
+export type CommonWidgetDefine = DefineComponent<typeof CommonWidgetPropsDefine, {}, {}>
 
 export type SelectionWidgetDefine = DefineComponent<typeof SelectionWidgetPropsDefine>
 
@@ -117,6 +117,8 @@ export interface Theme {
   widgets: {
     SelectionWidget: SelectionWidgetDefine,
     TextWidget: CommonWidgetDefine,
-    NumberWidget: CommonWidgetDefine
+    NumberWidget: CommonWidgetDefine,
+    [key: string]: any
   }
 }
+

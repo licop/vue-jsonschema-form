@@ -2,7 +2,7 @@ import { defineComponent, ref, reactive, watchEffect} from 'vue'
 import { type Ref } from 'vue'
 import MonatoEditor from './components/MonatoEditor'
 import { createUseStyles } from 'vue-jss'
-import SchemaForm, { type Schema } from '../lib'
+import SchemaForm, { type Schema, ThemeProvider } from '../lib'
 import demos from './demos'
 import themeDefault from '../lib/theme/default'
 
@@ -176,12 +176,13 @@ export default defineComponent({
               </div>
             </div>
             <div class={classes.form}>
-              <SchemaForm 
-                schema={demo.schema!}
-                onChange={handleChange} 
-                value={demo.data}
-                theme={themeDefault as any}
-              />
+              <ThemeProvider theme={themeDefault as any}>
+                <SchemaForm 
+                  schema={demo.schema!}
+                  onChange={handleChange} 
+                  value={demo.data}
+                />
+              </ThemeProvider>
             </div>
           </div>
         </div>

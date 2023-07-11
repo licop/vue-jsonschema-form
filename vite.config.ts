@@ -9,7 +9,10 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 export default defineConfig({
   plugins: [
     vue(),
-    vueJsx(),
+    vueJsx({
+      // 关闭mergeProps
+      mergeProps: false
+    }),
   ],
   resolve: {
     alias: {
