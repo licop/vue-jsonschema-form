@@ -27,7 +27,6 @@ const FormItem =  defineComponent({
     return () => {
       const { schema, errors } = props
       const classes = classesRef.value
-      console.log(errors, 30, 'formitem')
       return <div class={classes.container}>
         <label class={classes.label}>{schema.title ? `${schema.title}: ` : ''}</label>
         { slots.default && slots.default() }
@@ -51,7 +50,6 @@ export function withFormItem(Widget: any) {
     props: CommonWidgetPropsDefine,
 
     setup(props, { attrs }) {
-      console.log(props, 54)
       return () => {
         return <FormItem {...props}>
           <Widget {...props} {...attrs} />

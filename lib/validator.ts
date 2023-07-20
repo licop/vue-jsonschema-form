@@ -22,7 +22,6 @@ export type ErrorSchema = ErrorSchemaObject & {
 
 function toErrorSchema(errors: TransformedErrorObject[]) {
   if (errors.length < 1) return {}
-  console.log(errors, 24)
   return errors.reduce((errorSchema, error) => {
     const { property, message } = error
     const path = toPath(property) // .pass1 /obj/a -> [obj, a]
@@ -74,7 +73,7 @@ function transformErrors(errors: Ajv.ErrorObject[] | null | undefined): Transfor
   })
 }
 
-export function validateFormData(
+export async function validateFormData(
   validator: Ajv.Ajv,
   formData: any,
   schema: Schema,
@@ -88,7 +87,6 @@ export function validateFormData(
   } catch (error: any) {
     validationError = error
   }
-  console.log(validator.errors, 91)
   i18n[locale](validator.errors)
   
   let errors = transformErrors(validator.errors)
@@ -112,7 +110,7 @@ export function validateFormData(
   }
   
   const proxy = createErrorProxy()
-  customValidate(formData, proxy)
+  await customValidate(formData, proxy)
   
   const newErrorSchema = mergeObjects(errorSchema, proxy, true)
 
@@ -149,7 +147,6 @@ function createErrorProxy() {
     }
   })
 }
-
 
 export function mergeObjects(obj1: any, obj2: any, concatArrays = false) {
   // Recursively merge deeply nested objects.

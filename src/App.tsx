@@ -130,6 +130,12 @@ export default defineComponent({
     const classesRef = useStyles()
     const contextRef = ref()
 
+    function validateForm() {
+      contextRef.value.doValidate().then((result: any) => {
+        console.log(result)
+      })
+    }
+
     return () => {
       const classes = classesRef.value
       const select = selectRef.value
@@ -187,7 +193,7 @@ export default defineComponent({
                   customValidate={demo.customValidate}
                 />
               </ThemeProvider>
-              <button onClick={() => console.log(contextRef.value.doValidate())}>校 验</button>
+              <button onClick={validateForm}>校 验</button>
             </div>
           </div>
         </div>
