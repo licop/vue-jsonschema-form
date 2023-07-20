@@ -7,7 +7,6 @@ import ArrayField from './fileds/ArrayFiled';
 
 import { retrieveSchema } from './utils';
 
-
 export default defineComponent({
   name: 'SchemaItem',
   props: FiledPropsDefine,
@@ -18,7 +17,6 @@ export default defineComponent({
 
       return retrieveSchema(schema, rootSchema, value)
     })
-
 
     return () => {
       const { schema } = props

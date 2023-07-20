@@ -1,7 +1,8 @@
 import { CommonWidgetPropsDefine } from '../../types'
-import { computed, defineComponent } from 'vue'
+import { defineComponent } from 'vue'
+import { withFormItem } from './FormItem'
 
-const NumberWidget = defineComponent({
+const NumberWidget = withFormItem(defineComponent({
   name: 'NumberWidget',
   props: CommonWidgetPropsDefine,
   setup(props) {
@@ -29,6 +30,6 @@ const NumberWidget = defineComponent({
       )
     }
   }
-})
+}))
 
 export default NumberWidget

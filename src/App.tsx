@@ -96,7 +96,7 @@ export default defineComponent({
 
     watchEffect(() => {
       const index = selectRef.value
-      const d = demos[index]
+      const d: any = demos[index]
       
       demo.schema = d.schema
       demo.data = d.default
@@ -104,6 +104,7 @@ export default defineComponent({
       demo.schemaCode = toJson(d.schema)
       demo.dataCode = toJson(d.default)
       demo.uiSchemaCode = toJson(d.uiSchema)
+      demo.customValidate = d.customValidate
     })
 
     function handleChange(v: any) {
@@ -127,6 +128,7 @@ export default defineComponent({
     const handleUISchemaChange = (v: string) => handleCodeChange('uiSchema', v)
 
     const classesRef = useStyles()
+    const contextRef = ref()
 
     return () => {
       const classes = classesRef.value
@@ -181,8 +183,11 @@ export default defineComponent({
                   schema={demo.schema!}
                   onChange={handleChange} 
                   value={demo.data}
+                  contextRef={contextRef}
+                  customValidate={demo.customValidate}
                 />
               </ThemeProvider>
+              <button onClick={() => console.log(contextRef.value.doValidate())}>校 验</button>
             </div>
           </div>
         </div>

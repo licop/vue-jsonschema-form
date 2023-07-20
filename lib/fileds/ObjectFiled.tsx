@@ -4,8 +4,6 @@ import { useVJSFContext } from '../context';
 import { isObject } from '../utils';
 
 // 定义组件类型
-
-
 export default defineComponent({
   name: 'ObjectField',
   props: FiledPropsDefine,
@@ -25,7 +23,7 @@ export default defineComponent({
     }
 
     return () => {
-      const { schema, rootSchema, value} = props
+      const { schema, rootSchema, value, errorSchema} = props
 
       const { SchemaItem } = context
       const properties = schema.properties || {}
@@ -38,6 +36,7 @@ export default defineComponent({
           rootSchema={rootSchema} 
           value={currentValue[k]} 
           key={index}
+          errorSchema={errorSchema[k] || []}
           onChange={(v: any) => handleObjectFieldChange(k, v)}  
         />        
       ))
