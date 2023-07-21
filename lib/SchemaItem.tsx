@@ -6,16 +6,18 @@ import ObjectFiled from './fileds/ObjectFiled';
 import ArrayField from './fileds/ArrayFiled';
 
 import { retrieveSchema } from './utils';
+import { useVJSFContext } from './context';
 
 export default defineComponent({
   name: 'SchemaItem',
   props: FiledPropsDefine,
   setup(props) {
-    
+    const { transformSchemaRef } = useVJSFContext()
+
     const retrievedSchemaRef = computed(() => {
       const { schema, rootSchema, value } = props
 
-      return retrieveSchema(schema, rootSchema, value)
+      return transformSchemaRef.value(retrieveSchema(schema, rootSchema, value))
     })
 
     return () => {

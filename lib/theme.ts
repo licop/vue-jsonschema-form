@@ -1,5 +1,7 @@
-import { computed, defineComponent, type PropType, provide, inject, type ComputedRef } from 'vue';
-import type { Theme } from './types';
+import { computed, ref, defineComponent, type PropType, provide, inject, type ComputedRef, type ExtractPropTypes } from 'vue';
+import type { CommonWidgetDefine, FiledPropsDefine, Theme, UISchema } from './types';
+import { isObject } from './utils';
+import { useVJSFContext } from './context';
 
 const THEME_PROVIDER_KEY = Symbol()
 
@@ -20,7 +22,26 @@ const ThemeProvider = defineComponent({
   }
 })
 
-export function getWidget(name: string) {
+export function getWidget(
+  name: string, 
+  props?: ExtractPropTypes<typeof FiledPropsDefine>
+) {
+  const formContext  = useVJSFContext()
+
+  if(props) {
+    const { uiSchema, schema } = props
+    if(uiSchema?.widget && isObject(uiSchema.widget)) {
+      return ref(uiSchema.widget as CommonWidgetDefine)
+    }
+    
+    if (schema.format) {
+      if (formContext.formatMapRef.value[schema.format]) {
+        return ref(formContext.formatMapRef.value[schema.format])
+      }
+    }
+  }
+  
+
   const context: ComputedRef<Theme> | undefined = inject<ComputedRef<Theme>>(THEME_PROVIDER_KEY)
   if(!context) {
     throw new Error('vjsf theme required')

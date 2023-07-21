@@ -5,6 +5,8 @@ import { createUseStyles } from 'vue-jss'
 import SchemaForm, { type Schema, ThemeProvider } from '../lib'
 import demos from './demos'
 import themeDefault from '../lib/theme/default'
+import customFormat from './plugins/customFormat'
+import customKeyword from './plugins/customKeyword'
 
 // TODO: 在lib中export
 type UISchema = any
@@ -187,9 +189,12 @@ export default defineComponent({
               <ThemeProvider theme={themeDefault as any}>
                 <SchemaForm 
                   schema={demo.schema!}
+                  uiSchema={demo.uiSchema || {}}
                   onChange={handleChange} 
                   value={demo.data}
                   contextRef={contextRef}
+                  customFormat={customFormat}
+                  customKeyword={customKeyword}
                   customValidate={demo.customValidate}
                 />
               </ThemeProvider>

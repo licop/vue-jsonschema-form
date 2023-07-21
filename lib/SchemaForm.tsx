@@ -1,9 +1,9 @@
-import { defineComponent, provide, ref, shallowRef, watch, watchEffect } from 'vue';
+import { computed, defineComponent, provide, ref, shallowRef, watch, watchEffect } from 'vue';
 import type { PropType, Ref } from 'vue';
 import Ajv from 'ajv'
 import type { Options } from 'ajv'
 
-import { SchemaTypes, type Schema, type Theme } from './types';
+import type { Schema, UISchema, CustomFormat, CommonWidgetDefine, CustomKeyword } from './types';
 import SchemaItem from './SchemaItem';
 import { SchemaFormContextKey } from './context';
 import { validateFormData, type ErrorSchema } from './validator'
@@ -16,8 +16,7 @@ interface ContextRef {
 }
 
 const defaultAjvOptions: Options = {
-  allErrors: true,
-  // jsonPointers: true
+  allErrors: true
 }
 
 export default defineComponent({
@@ -46,6 +45,16 @@ export default defineComponent({
     },
     customValidate: {
       type: Function as PropType<(data: any, errors: any) => void>
+    },
+    uiSchema: {
+      type: Object as PropType<UISchema>
+    },
+    customFormat: {
+      type: [Object, Array] as PropType<CustomFormat | CustomFormat[]>
+    },
+    customKeyword: {
+      type: [Object, Array] as PropType<CustomKeyword | CustomKeyword[]>
+
     }
   },
   setup(props, {slots, emit, attrs}) {
@@ -54,10 +63,6 @@ export default defineComponent({
       props.onChange(v)
     }
 
-    const context = {
-      SchemaItem
-    }
-    
     const errorSchemaRef: Ref<ErrorSchema> = shallowRef({})
     const validatorRef: Ref<Ajv.Ajv> = shallowRef() as any
     
@@ -66,6 +71,20 @@ export default defineComponent({
         ...defaultAjvOptions,
         ...props.ajvOptions
       })
+
+      if(props.customFormat) {
+        const customFormats = Array.isArray(props.customFormat) ? props.customFormat : [props.customFormat]
+        customFormats.forEach(format => {
+          validatorRef.value.addFormat(format.name, format.definition)
+        })
+      }
+
+      if(props.customKeyword) {
+        const customKeywords = Array.isArray(props.customKeyword) ? props.customKeyword : [props.customKeyword]
+        customKeywords.forEach(keyword => {
+          validatorRef.value.addKeyword(keyword.name, keyword.definition)
+        })
+      }
     })
     
     const validateResolveRef = ref()
@@ -114,15 +133,54 @@ export default defineComponent({
     }, {
       immediate: true
     })
+    
+    const formatMapRef = computed(() => {
+      if(props.customFormat) {
+        const customFormats = Array.isArray(props.customFormat) ? props.customFormat : [props.customFormat]
+        return customFormats.reduce((result, format) => {
+          result[format.name] = format.component
+          return result
+        }, {} as {[key:string]: CommonWidgetDefine })
+      } else {
+        return {}
+      }
+    })
+
+    const transformSchemaRef = computed(() => {
+      if (props.customKeyword) {
+        const customKeywords = Array.isArray(props.customKeyword)
+          ? props.customKeyword
+          : [props.customKeyword]
+
+        return (schema: Schema) => {
+          let newSchema = schema
+          customKeywords.forEach((keyword) => {
+            if ((newSchema as any)[keyword.name]) {
+              newSchema = keyword.transformSchema(schema)
+            }
+          })
+          return newSchema
+        }
+      }
+      return (s: Schema) => s
+    })
+
+
+    const context = {
+      SchemaItem,
+      formatMapRef,
+      transformSchemaRef
+    }
 
     // 使用provide将SchemaItem传到子组件，防止组件间的的循环嵌套
     provide(SchemaFormContextKey, context)
 
     return () => {
-      const { schema, value } = props
+      const { schema, value, uiSchema } = props
       
       return <SchemaItem 
-        schema={schema} 
+        schema={schema}
+        uiSchema={uiSchema || {}} 
         rootSchema={schema} 
         value={value} 
         onChange={handleChange}

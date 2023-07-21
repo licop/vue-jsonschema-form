@@ -1,10 +1,10 @@
-import { CommonWidgetPropsDefine } from '../../types'
+import { CommonWidgetPropsDefine } from '../../lib/types'
 import { computed, defineComponent } from 'vue'
-import  { withFormItem } from './FormItem'
+import  { withFormItem } from '../../lib/theme/default/FormItem'
 
-const TextWidget = withFormItem(
+const PasswordWidget = withFormItem(
   defineComponent({
-    name: 'TextWidget',
+    name: 'PasswordWidget',
     props: CommonWidgetPropsDefine,
     setup(props) {
       const handleChange = (e: any) => {
@@ -12,20 +12,20 @@ const TextWidget = withFormItem(
         // e.target.value = props.value
         props.onChange(value)
       }
-      // 使用uiSchema改变组件样式
-      const styleRef = computed(() => {
-        return {
-          color: (props.options && props.options.color) || 'black',
-        }
-      })
+      
+      // const styleRef = computed(() => {
+      //   return {
+      //     color: (props.options && props.options.color) || 'black',
+      //   }
+      // })
       
       return () => {
         return (
             <input
-              type="text"
+              type="password"
               value={props.value as any}
               onInput={handleChange}
-              style={styleRef.value}
+              // style={styleRef.value}
             />          
         )
       }
@@ -33,4 +33,4 @@ const TextWidget = withFormItem(
   })
 )
 
-export default TextWidget
+export default PasswordWidget
