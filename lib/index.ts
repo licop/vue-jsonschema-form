@@ -3,6 +3,6 @@ import ThemeProvider from './theme';
 
 export default SchemaForm
 
-export {ThemeProvider}
+export { ThemeProvider }
 
 export * from './types'

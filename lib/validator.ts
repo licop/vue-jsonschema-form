@@ -1,3 +1,4 @@
+// 使用Ajv对表单数据进行校验
 import Ajv from 'ajv';
 import i18n from 'ajv-i18n'
 import toPath from 'lodash.topath'
@@ -19,12 +20,14 @@ interface ErrorSchemaObject {
 export type ErrorSchema = ErrorSchemaObject & {
   __errors?: string[]
 }
-
 function toErrorSchema(errors: TransformedErrorObject[]) {
   if (errors.length < 1) return {}
+
   return errors.reduce((errorSchema, error) => {
     const { property, message } = error
     const path = toPath(property) // .pass1 /obj/a -> [obj, a]
+    console.log(property, path, 29)
+
     let parent = errorSchema
 
     // If the property is at the root (.level1) then toPath creates
@@ -59,16 +62,18 @@ function toErrorSchema(errors: TransformedErrorObject[]) {
   }, {} as ErrorSchema)
 }
 
-function transformErrors(errors: Ajv.ErrorObject[] | null | undefined): TransformedErrorObject[] {
-  if(errors === null || errors === undefined) return []
-  
-  return errors.map(({message, dataPath, keyword, params, schemaPath}) => {
+function transformErrors(
+  errors: Ajv.ErrorObject[] | null | undefined,
+): TransformedErrorObject[] {
+  if (errors === null || errors === undefined) return []
+
+  return errors.map(({ message, dataPath, keyword, params, schemaPath }) => {
     return {
       name: keyword,
       property: `${dataPath}`,
       message,
       params,
-      schemaPath
+      schemaPath,
     }
   })
 }
@@ -77,41 +82,50 @@ export async function validateFormData(
   validator: Ajv.Ajv,
   formData: any,
   schema: Schema,
-  locale: string = 'zh',
-  customValidate?: (data: any, error: any) => void 
+  locale = 'zh',
+  customValidate?: (data: any, errors: any) => void,
 ) {
-  let validationError = null
-
+  let validationError: any = null
   try {
     validator.validate(schema, formData)
-  } catch (error: any) {
-    validationError = error
+  } catch (err) {
+    validationError = err
   }
+  console.log(validator.errors, 95)
   i18n[locale](validator.errors)
-  
   let errors = transformErrors(validator.errors)
-  
+
   if (validationError) {
     errors = [
       ...errors,
       {
         message: validationError.message,
-      } as TransformedErrorObject
+      } as TransformedErrorObject,
     ]
   }
 
   const errorSchema = toErrorSchema(errors)
-  if(!customValidate) {
+
+  if (!customValidate) {
     return {
       errors,
       errorSchema,
-      valid: errors.length === 0
+      valid: errors.length === 0,
     }
   }
-  
+
+  /**
+   * {
+   *    obj: {
+   *       a: { b: str }
+   *       __errors: []
+   *    }
+   * }
+   *
+   * raw.obj.a
+   */
   const proxy = createErrorProxy()
   await customValidate(formData, proxy)
-  
   const newErrorSchema = mergeObjects(errorSchema, proxy, true)
 
   return {
@@ -123,14 +137,13 @@ export async function validateFormData(
 
 function createErrorProxy() {
   const raw = {}
-
   return new Proxy(raw, {
     get(target, key, reciver) {
-      if(key === 'addError') {
+      console.log(target, key, reciver, 142)
+      if (key === 'addError') {
         return (msg: string) => {
           const __errors = Reflect.get(target, '__errors', reciver)
-
-          if(__errors && Array.isArray(__errors)) {
+          if (__errors && Array.isArray(__errors)) {
             __errors.push(msg)
           } else {
             ;(target as any).__errors = [msg]
@@ -138,13 +151,14 @@ function createErrorProxy() {
         }
       }
       const res = Reflect.get(target, key, reciver)
-      if(res === undefined) {
+      if (res === undefined) {
         const p: any = createErrorProxy()
         ;(target as any)[key] = p
         return p
       }
+
       return res
-    }
+    },
   })
 }
 

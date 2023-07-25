@@ -8,7 +8,6 @@ import themeDefault from '../lib/theme/default'
 import customFormat from './plugins/customFormat'
 import customKeyword from './plugins/customKeyword'
 
-// TODO: 在lib中export
 type UISchema = any
 
 function toJson(data: any) {
@@ -19,6 +18,7 @@ const schema = {
   type: 'string'
 }
 
+// css-in-js
 const useStyles = createUseStyles({
   container: {
     display: 'flex',
@@ -131,17 +131,18 @@ export default defineComponent({
 
     const classesRef = useStyles()
     const contextRef = ref()
-
+   
+    // 表单校验
     function validateForm() {
       contextRef.value.doValidate().then((result: any) => {
-        console.log(result)
+        console.log('validate:', result)
       })
     }
-
+    
     return () => {
       const classes = classesRef.value
       const select = selectRef.value
-
+      
       return (
         <div class={classes.container}>
           <div class={classes.menu}>

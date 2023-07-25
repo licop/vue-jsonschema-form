@@ -1,5 +1,6 @@
-import { computed, ref, defineComponent, type PropType, provide, inject, type ComputedRef, type ExtractPropTypes } from 'vue';
-import type { CommonWidgetDefine, FiledPropsDefine, Theme, UISchema } from './types';
+// 实现组件主题配置
+import { computed, ref, defineComponent, type PropType, provide, inject, type ComputedRef, type ExtractPropTypes, shallowRef, markRaw } from 'vue';
+import type { CommonWidgetDefine, FiledPropsDefine, Theme } from './types';
 import { isObject } from './utils';
 import { useVJSFContext } from './context';
 
@@ -22,6 +23,7 @@ const ThemeProvider = defineComponent({
   }
 })
 
+// 获取主题组件函数
 export function getWidget(
   name: string, 
   props?: ExtractPropTypes<typeof FiledPropsDefine>
@@ -31,18 +33,18 @@ export function getWidget(
   if(props) {
     const { uiSchema, schema } = props
     if(uiSchema?.widget && isObject(uiSchema.widget)) {
-      return ref(uiSchema.widget as CommonWidgetDefine)
+      return shallowRef(uiSchema.widget as CommonWidgetDefine)
     }
     
     if (schema.format) {
       if (formContext.formatMapRef.value[schema.format]) {
-        return ref(formContext.formatMapRef.value[schema.format])
+        return shallowRef(formContext.formatMapRef.value[schema.format])
       }
     }
   }
   
-
   const context: ComputedRef<Theme> | undefined = inject<ComputedRef<Theme>>(THEME_PROVIDER_KEY)
+
   if(!context) {
     throw new Error('vjsf theme required')
   }

@@ -36,6 +36,7 @@ export default defineComponent({
     contextRef: {
       type: Object as PropType<Ref<ContextRef | undefined>>
     },
+    // Ajv的配置选项
     ajvOptions: {
       type: Object as PropType<Options>
     },
@@ -43,6 +44,7 @@ export default defineComponent({
       type: String, 
       defalut: 'zh'
     },
+    // 自定义校验
     customValidate: {
       type: Function as PropType<(data: any, errors: any) => void>
     },
@@ -54,7 +56,6 @@ export default defineComponent({
     },
     customKeyword: {
       type: [Object, Array] as PropType<CustomKeyword | CustomKeyword[]>
-
     }
   },
   setup(props, {slots, emit, attrs}) {
@@ -71,14 +72,14 @@ export default defineComponent({
         ...defaultAjvOptions,
         ...props.ajvOptions
       })
-
+      // 自定义format校验
       if(props.customFormat) {
         const customFormats = Array.isArray(props.customFormat) ? props.customFormat : [props.customFormat]
         customFormats.forEach(format => {
           validatorRef.value.addFormat(format.name, format.definition)
         })
       }
-
+      // 自定义keyword校验
       if(props.customKeyword) {
         const customKeywords = Array.isArray(props.customKeyword) ? props.customKeyword : [props.customKeyword]
         customKeywords.forEach(keyword => {
@@ -95,7 +96,7 @@ export default defineComponent({
         doValidate()
       }
     }, { deep: true })
-
+    
     async function doValidate() {
       console.log('start validate -------->')
       const index = (validateIndex.value += 1)
@@ -107,7 +108,7 @@ export default defineComponent({
         props.locale,
         props.customValidate,
       )
-
+      
       if (index !== validateIndex.value) return
       console.log('end validate -------->')
 
@@ -125,8 +126,6 @@ export default defineComponent({
               validateResolveRef.value = resolve
               doValidate()
             })
-            
-            
           }
         }
       }
@@ -177,7 +176,7 @@ export default defineComponent({
 
     return () => {
       const { schema, value, uiSchema } = props
-      
+     
       return <SchemaItem 
         schema={schema}
         uiSchema={uiSchema || {}} 

@@ -8,7 +8,7 @@ export default {
       pass1: {
         type: 'string',
         minLength: 10,
-        test: true,
+        // test: true,
         title: 'password',
       },
       pass2: {
@@ -23,6 +23,7 @@ export default {
       }
     },
   },
+  // 自定义校验
   async customValidate(data: any, errors: any) {
     return new Promise<void>((resolve) => {
       setTimeout(() => {
