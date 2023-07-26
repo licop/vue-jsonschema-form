@@ -1,11 +1,10 @@
+// 对表单选项进行包装，增加校验错误信息和label
 import { defineComponent } from 'vue';
 import { CommonWidgetPropsDefine, type CommonWidgetDefine } from '../../types';
 import { createUseStyles } from 'vue-jss';
 
 const useStyles = createUseStyles({
-  container: {
-
-  },
+  container: {},
   label: {
     display: 'block',
     color: '#777'
@@ -18,12 +17,13 @@ const useStyles = createUseStyles({
     listStyle: 'none'
   }
 })
+
 const FormItem =  defineComponent({
   name: 'FormItem',
   props: CommonWidgetPropsDefine,
   setup(props, { slots }) {
     const classesRef = useStyles() 
-
+  
     return () => {
       const { schema, errors } = props
       const classes = classesRef.value

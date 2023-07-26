@@ -9,15 +9,14 @@ const PasswordWidget = withFormItem(
     setup(props) {
       const handleChange = (e: any) => {
         const value = e.target.value
-        // e.target.value = props.value
         props.onChange(value)
       }
       
-      // const styleRef = computed(() => {
-      //   return {
-      //     color: (props.options && props.options.color) || 'black',
-      //   }
-      // })
+      const styleRef = computed(() => {
+        return {
+          color: (props.options && props.options.color) || 'black',
+        }
+      })
       
       return () => {
         return (
@@ -25,7 +24,7 @@ const PasswordWidget = withFormItem(
               type="password"
               value={props.value as any}
               onInput={handleChange}
-              // style={styleRef.value}
+              style={styleRef.value}
             />          
         )
       }

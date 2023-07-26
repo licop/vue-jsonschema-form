@@ -1,4 +1,5 @@
-import { defineComponent, inject } from 'vue';
+// type为object类型可以组合多个不同类型的表单组件
+import { defineComponent } from 'vue';
 import { FiledPropsDefine } from '../types';
 import { useVJSFContext } from '../context';
 import { isObject } from '../utils';
@@ -24,10 +25,8 @@ export default defineComponent({
 
     return () => {
       const { schema, rootSchema, value, errorSchema, uiSchema} = props
-
       const { SchemaItem } = context
       const properties = schema.properties || {}
-
       const currentValue: any = isObject(value) ? value : {}
       
       return Object.keys(properties).map((k: string, index: number) => (

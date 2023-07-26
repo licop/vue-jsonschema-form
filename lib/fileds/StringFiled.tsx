@@ -18,7 +18,7 @@ export default defineComponent({
     
     const widgetOptionRef = computed(() => {
       const { widget, properties, items, ...rest } = props.uiSchema
-
+      
       return rest
     })
 

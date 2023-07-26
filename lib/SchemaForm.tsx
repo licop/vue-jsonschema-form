@@ -176,7 +176,6 @@ export default defineComponent({
 
     return () => {
       const { schema, value, uiSchema } = props
-     
       return <SchemaItem 
         schema={schema}
         uiSchema={uiSchema || {}} 

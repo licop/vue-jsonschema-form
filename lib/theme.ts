@@ -1,5 +1,5 @@
 // 实现组件主题配置
-import { computed, ref, defineComponent, type PropType, provide, inject, type ComputedRef, type ExtractPropTypes, shallowRef, markRaw } from 'vue';
+import { computed, ref, defineComponent, type PropType, provide, inject, type ComputedRef, type ExtractPropTypes, shallowRef, markRaw, toRaw } from 'vue';
 import type { CommonWidgetDefine, FiledPropsDefine, Theme } from './types';
 import { isObject } from './utils';
 import { useVJSFContext } from './context';
@@ -29,13 +29,13 @@ export function getWidget(
   props?: ExtractPropTypes<typeof FiledPropsDefine>
 ) {
   const formContext  = useVJSFContext()
-
+  
   if(props) {
     const { uiSchema, schema } = props
     if(uiSchema?.widget && isObject(uiSchema.widget)) {
-      return shallowRef(uiSchema.widget as CommonWidgetDefine)
+      const widget = toRaw(uiSchema.widget as CommonWidgetDefine)
+      return shallowRef(widget as CommonWidgetDefine)
     }
-    
     if (schema.format) {
       if (formContext.formatMapRef.value[schema.format]) {
         return shallowRef(formContext.formatMapRef.value[schema.format])

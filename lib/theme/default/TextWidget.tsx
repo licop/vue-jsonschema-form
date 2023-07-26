@@ -9,7 +9,6 @@ const TextWidget = withFormItem(
     setup(props) {
       const handleChange = (e: any) => {
         const value = e.target.value
-        // e.target.value = props.value
         props.onChange(value)
       }
       // 使用uiSchema改变组件样式

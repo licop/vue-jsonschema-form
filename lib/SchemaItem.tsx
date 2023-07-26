@@ -13,7 +13,7 @@ export default defineComponent({
   props: FiledPropsDefine,
   setup(props) {
     const { transformSchemaRef } = useVJSFContext()
-
+     
     const retrievedSchemaRef = computed(() => {
       const { schema, rootSchema, value } = props
 
@@ -24,8 +24,8 @@ export default defineComponent({
       const { schema } = props
       const type = schema.type
       const retrievedSchema = retrievedSchemaRef.value
-      let Component: any 
-
+      let Component: any
+      
       switch(type) {
         case SchemaTypes.STRING: {
           Component = StringFiled
@@ -47,7 +47,7 @@ export default defineComponent({
           console.warn(`${type} is not supported`)
         }
       }
-
+      
       return <Component {...props} schema={retrievedSchema} />
     }
   }

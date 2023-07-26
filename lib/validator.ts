@@ -26,7 +26,6 @@ function toErrorSchema(errors: TransformedErrorObject[]) {
   return errors.reduce((errorSchema, error) => {
     const { property, message } = error
     const path = toPath(property) // .pass1 /obj/a -> [obj, a]
-    console.log(property, path, 29)
 
     let parent = errorSchema
 
@@ -139,7 +138,8 @@ function createErrorProxy() {
   const raw = {}
   return new Proxy(raw, {
     get(target, key, reciver) {
-      console.log(target, key, reciver, 142)
+      console.log(target, key, 142)
+
       if (key === 'addError') {
         return (msg: string) => {
           const __errors = Reflect.get(target, '__errors', reciver)
@@ -158,7 +158,7 @@ function createErrorProxy() {
       }
 
       return res
-    },
+    }
   })
 }
 
