@@ -4,6 +4,7 @@ import {type  CustomFormat, CommonWidgetPropsDefine } from '../../lib/types'
 
 import { withFormItem } from '../../lib/theme/default/FormItem'
 
+// 实现选中颜色组件
 const format: CustomFormat = {
   name: 'color',
   definition: {
@@ -37,9 +38,9 @@ const format: CustomFormat = {
             />
           )
         }
-      },
-    }),
-  ),
+      }
+    })
+  )
 }
 
 export default format

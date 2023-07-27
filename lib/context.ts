@@ -14,6 +14,6 @@ export function useVJSFContext() {
   if(!context) {
     throw Error('SchemaForm should be used')
   }
-
+   
   return context
 }

@@ -1,4 +1,5 @@
 // 使用Ajv对表单数据进行校验
+
 import Ajv from 'ajv';
 import i18n from 'ajv-i18n'
 import toPath from 'lodash.topath'
@@ -90,7 +91,6 @@ export async function validateFormData(
   } catch (err) {
     validationError = err
   }
-  console.log(validator.errors, 95)
   i18n[locale](validator.errors)
   let errors = transformErrors(validator.errors)
 
@@ -112,7 +112,7 @@ export async function validateFormData(
       valid: errors.length === 0,
     }
   }
-
+  
   /**
    * {
    *    obj: {
@@ -123,6 +123,7 @@ export async function validateFormData(
    *
    * raw.obj.a
    */
+  // 如果是自定义校验
   const proxy = createErrorProxy()
   await customValidate(formData, proxy)
   const newErrorSchema = mergeObjects(errorSchema, proxy, true)
@@ -138,8 +139,6 @@ function createErrorProxy() {
   const raw = {}
   return new Proxy(raw, {
     get(target, key, reciver) {
-      console.log(target, key, 142)
-
       if (key === 'addError') {
         return (msg: string) => {
           const __errors = Reflect.get(target, '__errors', reciver)
@@ -150,6 +149,7 @@ function createErrorProxy() {
           }
         }
       }
+      
       const res = Reflect.get(target, key, reciver)
       if (res === undefined) {
         const p: any = createErrorProxy()

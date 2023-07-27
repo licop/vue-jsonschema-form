@@ -16,6 +16,8 @@ type SchemaRef = { $ref: string }
 export interface Schema {
   // 定义元素的类型
   type?: SchemaTypes | string
+  // 表单描述文案
+  description?: string
   const?: any
   format?: string
   // 为JSON Schema文件提供标题

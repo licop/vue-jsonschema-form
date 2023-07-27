@@ -1,5 +1,8 @@
-import Simple from './simple';
-import Demo from './demo'
-import Test from './test'
+import Object from './object'
+import Single from './single';
+import Array from './array';
+import CustomFormat from './customFormat';
+import CustomValidate from './customValidate';
+import UiSchema from './uiSchema';
 
-export default [Test, Demo, Simple]
+export default [Single, Object, Array,  CustomFormat, CustomValidate, UiSchema]

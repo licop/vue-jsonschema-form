@@ -7,6 +7,7 @@ import type { Schema, UISchema, CustomFormat, CommonWidgetDefine, CustomKeyword 
 import SchemaItem from './SchemaItem';
 import { SchemaFormContextKey } from './context';
 import { validateFormData, type ErrorSchema } from './validator'
+import { createUseStyles } from 'vue-jss';
 
 interface ContextRef {
   doValidate: () => Promise<{
@@ -18,6 +19,14 @@ interface ContextRef {
 const defaultAjvOptions: Options = {
   allErrors: true
 }
+
+const useStyles = createUseStyles({
+  container: {},
+  desc: {
+    color: '#555',
+    margin: '5px 0px'
+  }
+})
 
 export default defineComponent({
   name: 'SchemaForm',
@@ -58,8 +67,9 @@ export default defineComponent({
       type: [Object, Array] as PropType<CustomKeyword | CustomKeyword[]>
     }
   },
-  setup(props, {slots, emit, attrs}) {
-    
+  setup(props) {
+    const classesRef = useStyles() 
+
     const handleChange = (v: any) => {
       props.onChange(v)
     }
@@ -72,6 +82,7 @@ export default defineComponent({
         ...defaultAjvOptions,
         ...props.ajvOptions
       })
+
       // 自定义format校验
       if(props.customFormat) {
         const customFormats = Array.isArray(props.customFormat) ? props.customFormat : [props.customFormat]
@@ -79,6 +90,7 @@ export default defineComponent({
           validatorRef.value.addFormat(format.name, format.definition)
         })
       }
+
       // 自定义keyword校验
       if(props.customKeyword) {
         const customKeywords = Array.isArray(props.customKeyword) ? props.customKeyword : [props.customKeyword]
@@ -133,6 +145,7 @@ export default defineComponent({
       immediate: true
     })
     
+    // 自定义fotmat组件Map
     const formatMapRef = computed(() => {
       if(props.customFormat) {
         const customFormats = Array.isArray(props.customFormat) ? props.customFormat : [props.customFormat]
@@ -144,7 +157,8 @@ export default defineComponent({
         return {}
       }
     })
-
+    
+    // 自定义keyword转换schema
     const transformSchemaRef = computed(() => {
       if (props.customKeyword) {
         const customKeywords = Array.isArray(props.customKeyword)
@@ -176,14 +190,20 @@ export default defineComponent({
 
     return () => {
       const { schema, value, uiSchema } = props
-      return <SchemaItem 
-        schema={schema}
-        uiSchema={uiSchema || {}} 
-        rootSchema={schema} 
-        value={value} 
-        onChange={handleChange}
-        errorSchema = {errorSchemaRef.value || {}} 
-      />
+      const classes = classesRef.value
+      return <div class={classes.container}>
+        <h4 class={classes.desc}>
+          {props.schema.description}
+        </h4>
+        <SchemaItem 
+          schema={schema}
+          uiSchema={uiSchema || {}} 
+          rootSchema={schema} 
+          value={value} 
+          onChange={handleChange}
+          errorSchema = {errorSchemaRef.value || {}} 
+        />
+      </div>
     }
   }
 })
