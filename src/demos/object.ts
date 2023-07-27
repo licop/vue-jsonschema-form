@@ -1,7 +1,7 @@
 export default {
   name: 'Objects',
   schema: {
-    description: 'A simple form example.',
+    description: '一个简易的表单',
     type: 'object',
     required: ['firstName', 'lastName'],
     properties: {
